@@ -65,25 +65,17 @@ class Lit {
     if (!this.litNodeClient) {
       await this.connect();
     }
-    console.log("a");
-    console.log(encryptedFile);
-    console.log(encryptedSymmetricKey);
-    console.log("b");
     const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain });
-    console.log("c");
     const symmetricKey = await this.litNodeClient.getEncryptionKey({
         accessControlConditions: accessControlConditions,
         toDecrypt: encryptedSymmetricKey,
         chain,
         authSig
     });
-    console.log("d");
     const decryptedFile = await LitJsSdk.decryptFile({
         file: encryptedFile,
         symmetricKey
     });
-    console.log("e");
-    console.log(decryptedFile);
     return decryptedFile;
   }
 }

@@ -3,16 +3,6 @@ import lit from './lit';
 import './App.css';
 
 function App() {
-  // useEffect(() => {
-  //   (async () => {
-  //     lit.connect();
-  //     const encrypted = await lit.encryptString(file);
-  //     console.log(encrypted);
-  //     const decrypted = await lit.decryptString(encrypted.encryptedFile, encrypted.encryptedSymmetricKey);
-  //     console.log("decrypted:");
-  //     console.log(decrypted);
-  //   })();
-  // }, []);
 
   const [file, setFile] = useState(null);
   const [encryptedFile, setEncryptedFile] = useState(null);
@@ -28,11 +18,7 @@ function App() {
       alert("Please select a file before encrypting!");
       return;
     }
-    console.log(file);
     const { encryptedFile, encryptedSymmetricKey } = await lit.encryptFile(file);
-    console.log("Enc:");
-    console.log(encryptedFile);
-    console.log(encryptedSymmetricKey);
     setEncryptedFile(encryptedFile);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
     alert("File Encrypted! Thanks for using Lit");
@@ -44,21 +30,10 @@ function App() {
       return;
     }
     const decrypted = await lit.decryptFile(encryptedFile, encryptedSymmetricKey);
-    console.log(decrypted);
     var enc = new TextDecoder("utf-8");
     setFileContent(enc.decode(decrypted));
     alert("File Decrypted! See contents below");
   }
-
-  useEffect(() => {
-    console.log("encryptedFile:");
-    console.log(encryptedFile);
-  }, [encryptedFile]);
-
-  useEffect(() => {
-    console.log("encryptedSymmetricKey:");
-    console.log(encryptedSymmetricKey);
-  }, [encryptedSymmetricKey]);
 
   return (
     <div className="App">

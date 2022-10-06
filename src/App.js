@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import lit from './lit';
 import './App.css';
+
+const noAuthError = "The access control condition check failed! You should have at least 0.000001 ETH to decrypt this file.";
 
 function App() {
 
@@ -29,10 +31,14 @@ function App() {
       alert("Please Encrypt your file first!");
       return;
     }
-    const decrypted = await lit.decryptFile(encryptedFile, encryptedSymmetricKey);
-    var enc = new TextDecoder("utf-8");
-    setFileContent(enc.decode(decrypted));
-    alert("File Decrypted! See contents below");
+    try {
+      const decrypted = await lit.decryptFile(encryptedFile, encryptedSymmetricKey);
+      var enc = new TextDecoder("utf-8");
+      setFileContent(enc.decode(decrypted));
+      alert("File Decrypted! See contents below");
+    } catch (error) {
+      setFileContent(noAuthError);
+    }
   }
 
   return (

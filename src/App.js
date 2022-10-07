@@ -2,7 +2,7 @@ import { useState } from 'react';
 import lit from './lit';
 import './App.css';
 
-const noAuthError = "The access control condition check failed! You should have at least 0.000001 ETH to decrypt this file.";
+const noAuthError = "The access control condition check failed! You should have at least 0 ETH to decrypt this file.";
 
 function App() {
 
@@ -20,6 +20,7 @@ function App() {
       alert("Please select a file before encrypting!");
       return;
     }
+
     const { encryptedFile, encryptedSymmetricKey } = await lit.encryptFile(file);
     setEncryptedFile(encryptedFile);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
@@ -31,6 +32,7 @@ function App() {
       alert("Please Encrypt your file first!");
       return;
     }
+
     try {
       const decrypted = await lit.decryptFile(encryptedFile, encryptedSymmetricKey);
       var enc = new TextDecoder("utf-8");

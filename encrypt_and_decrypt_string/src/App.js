@@ -41,7 +41,7 @@ function App() {
     <div className="App">
       <h1>Encrypt & Decrypt a string using Lit SDK</h1>
       <div className="textAreas">
-        <textarea type="text" onChange={e => setText(e.target.value)} />
+        <textarea type="text" onChange={e => setText(e.target.value)} placeholder="Type here..." />
         <textarea readOnly value={decryptedText} className="readOnly" />
       </div>
       <div>

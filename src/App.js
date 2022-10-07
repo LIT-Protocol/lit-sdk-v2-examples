@@ -27,6 +27,7 @@ function App() {
     const { encryptedFile, encryptedSymmetricKey } = await lit.encryptFile(file);
     setEncryptedFile(encryptedFile);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
+    setFileSize(0);
   }
 
   const decryptFile = async () => {

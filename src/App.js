@@ -9,10 +9,13 @@ function App() {
   const [file, setFile] = useState(null);
   const [encryptedFile, setEncryptedFile] = useState(null);
   const [encryptedSymmetricKey, setEncryptedSymmetricKey] = useState(null);
-  const [fileContent, setFileContent] = useState("");
+  const [fileSize, setFileSize] = useState(0);
 
   const selectFile = (e) => {
     setFile(e.target.files[0]);
+    setEncryptedFile(null);
+    setEncryptedSymmetricKey(null);
+    setFileSize(0);
   }
 
   const encryptFile = async () => {
@@ -24,22 +27,19 @@ function App() {
     const { encryptedFile, encryptedSymmetricKey } = await lit.encryptFile(file);
     setEncryptedFile(encryptedFile);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
-    alert("File Encrypted! Thanks for using Lit");
   }
 
   const decryptFile = async () => {
     if (encryptedFile === null) {
-      alert("Please Encrypt your file first!");
+      alert("Please encrypt your file first!");
       return;
     }
 
     try {
       const decrypted = await lit.decryptFile(encryptedFile, encryptedSymmetricKey);
-      var enc = new TextDecoder("utf-8");
-      setFileContent(enc.decode(decrypted));
-      alert("File Decrypted! See contents below");
+      setFileSize(decrypted.byteLength);
     } catch (error) {
-      setFileContent(noAuthError);
+      alert(noAuthError);
     }
   }
 
@@ -51,11 +51,12 @@ function App() {
           <button onClick={encryptFile}>Encrypt</button>
           <button onClick={decryptFile}>Decrypt</button>
         </div>
-        <div className="contents">
-          {fileContent.length > 0 && (
-            <div>{fileContent}</div>
-          )}
-        </div>
+        {(encryptedFile !== null && fileSize === 0) && (
+          <h3>File Encrypted: {file.name}. Thanks for using Lit!</h3>
+        )}
+        {fileSize > 0 && (
+          <h3>File Decrypted: {file.name} of {fileSize} bytes</h3>
+        )}
     </div>
   );
 }

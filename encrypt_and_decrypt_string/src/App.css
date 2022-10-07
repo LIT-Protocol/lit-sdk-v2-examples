@@ -15,7 +15,7 @@ h1 {
 }
 
 textarea {
-  width: 50%;
+  width:30%;
   height: 15em;
   border-radius: 15px;
   padding: 15px;
@@ -24,6 +24,7 @@ textarea {
   font-family: "Poppins", sans-serif;
   color: #131316;
   border: none;
+  margin: 2em;
 }
 
 button {
@@ -36,10 +37,19 @@ button {
   font-family: "Poppins", sans-serif;
   border-radius: 10px;
   border: none;
-  margin-bottom: 5em;
+  margin-bottom: 3em;
   cursor: pointer;
 }
 
 .App {
   text-align: center;
+}
+
+.textAreas {
+  display: flex;
+  justify-content: center;
+}
+
+.readOnly {
+  background-color: lightgray;
 }

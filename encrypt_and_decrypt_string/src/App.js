@@ -16,11 +16,11 @@ function App() {
       return;
     }
 
-    console.log(text);
+    setDecryptedText("");
+
     const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text);
     setEncryptedText(encryptedString);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
-    setDecryptedText("");
   }
 
   const decryptText = async () => {
@@ -32,8 +32,6 @@ function App() {
     try {
       const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey);
       setDecryptedText(decryptedString);
-      console.log(decryptedString);
-      console.log(decryptedString === text);
     } catch (error) {
       alert(noAuthError);
     }
@@ -42,7 +40,10 @@ function App() {
   return (
     <div className="App">
       <h1>Encrypt & Decrypt a string using Lit SDK</h1>
-      <textarea type="text" onChange={e => setText(e.target.value)} />
+      <div className="textAreas">
+        <textarea type="text" onChange={e => setText(e.target.value)} />
+        <textarea readOnly value={decryptedText} className="readOnly" />
+      </div>
       <div>
         <button onClick={encryptText}>Encrypt</button>
         <button onClick={decryptText}>Decrypt</button>
@@ -51,10 +52,7 @@ function App() {
         <h3>String Encrypted: {encryptedText.size} bytes. Thanks for using Lit!</h3>
       )}
       {decryptedText.length > 0 && (
-        <div>
-          <h3>String Decrypted: </h3>
-          <textarea readOnly value={decryptedText}/>
-        </div>
+        <h3>String Decrypted: See the right text area</h3>
       )}
     </div>
   );

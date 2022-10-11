@@ -7,7 +7,7 @@ export default function Nft({ nft }) {
         <h2>{ nft.name }</h2>
         <div className='nft__divider'></div>
         <div className='nft__details'>
-            <img src={nft.image} />
+            <img src={nft.imageUrl} />
             { nft.description }
         </div>
     </div>

@@ -9,6 +9,13 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 1337
-    }
+    },
+    mumbai: {
+      url: process.env.TESTNET_RPC,
+      accounts: [process.env.PRIVATE_KEY]
+    },
+  },
+  etherscan: {
+    apiKey: process.env.POLYGONSCAN_API_KEY
   }
 };

@@ -17,6 +17,9 @@ function App() {
 		const litNftContract = new ethers.Contract(litNFTContractAddress, LitNft.abi, signer);
 		let transaction = await litNftContract.mintLitNft(sampleNft.name, sampleNft.description, sampleNft.imageUrl);
     await transaction.wait();
+
+    const nfts = await litNftContract.fetchNfts();
+    console.log(nfts);
   }
 
   return (

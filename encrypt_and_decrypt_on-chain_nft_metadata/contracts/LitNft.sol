@@ -5,20 +5,30 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract LitNft is ERC721URIStorage {
+contract LitNft is ERC721URIStorage, ReentrancyGuard {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721 ("Lit NFT", "LITNFT"){
+    constructor() ERC721 ("Lit NFT", "LITNFT"){}
+
+    mapping(uint256 => nft) private tokenIdToNft;
+
+    struct nft {
+        uint256 tokenId;
+        string name;
+        string encryptedDescription;
+        string imageUrl;
+        address owner;
     }
 
     function getTokenURI(
         string memory name,
         string memory encryptedDescription,
         string memory imageUrl
-    ) public pure returns (string memory) {
+    ) private pure returns (string memory) {
         bytes memory dataURI = abi.encodePacked(
             '{',
                 '"name": "', name, '",',
@@ -38,10 +48,21 @@ contract LitNft is ERC721URIStorage {
         string memory name,
         string memory encryptedDescription,
         string memory imageUrl
-    ) public {
+    ) public nonReentrant {
         _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
-        _safeMint(msg.sender, newItemId);
-        _setTokenURI(newItemId, getTokenURI(name, encryptedDescription, imageUrl));
+        uint256 newNftTokenId = _tokenIds.current();
+        _safeMint(msg.sender, newNftTokenId);
+        _setTokenURI(newNftTokenId, getTokenURI(name, encryptedDescription, imageUrl));
+        tokenIdToNft[newNftTokenId] = nft(newNftTokenId, name, encryptedDescription, imageUrl, msg.sender);
+    }
+
+    function fetchNfts() public view returns (nft[] memory) {
+        nft[] memory nfts = new nft[](_tokenIds.current());
+        for (uint256 idx = 1; idx < _tokenIds.current() + 1; idx++) {
+            nft memory currNft = tokenIdToNft[idx];
+            nfts[idx - 1] = currNft;
+        }
+
+        return nfts;
     }
 }

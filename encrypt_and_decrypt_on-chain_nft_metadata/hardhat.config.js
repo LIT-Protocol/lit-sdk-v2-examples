@@ -12,7 +12,7 @@ module.exports = {
     },
     mumbai: {
       url: process.env.TESTNET_RPC,
-      accounts: [process.env.PRIVATE_KEY]
+      accounts: [`0x${process.env.PRIVATE_KEY}`]
     },
   },
   etherscan: {

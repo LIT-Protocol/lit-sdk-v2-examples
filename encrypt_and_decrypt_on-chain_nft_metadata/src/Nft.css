@@ -1,0 +1,30 @@
+h2 {
+    margin: .5em;
+}
+
+img {
+    border-radius: 15px;
+    object-fit: fill;
+    height: 12em;
+    width: 10em;
+}
+
+.nft {
+    background-color: #ffffff;
+    color: black;
+    width: fit-content;
+    border-radius: 15px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.nft__divider {
+    height: 1px;
+    background-color: black;
+}
+
+.nft__details {
+    display: flex;
+    margin: 1em;
+    gap: 1.5em;
+}

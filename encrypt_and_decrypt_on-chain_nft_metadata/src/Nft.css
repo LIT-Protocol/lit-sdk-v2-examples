@@ -28,3 +28,20 @@ img {
     margin: 1em;
     gap: 1.5em;
 }
+
+.nft__description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nft__decrypt {
+    border-radius: 10px;
+    width: 5em;
+    background-color: #24a0ed;
+    border: none;
+    color: black;
+    font-size: 15px;
+    padding: 10px;
+}

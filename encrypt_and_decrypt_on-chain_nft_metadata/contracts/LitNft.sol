@@ -17,23 +17,24 @@ contract LitNft is ERC721URIStorage, ReentrancyGuard {
     mapping(uint256 => nft) private tokenIdToNft;
 
     struct nft {
-        uint256 tokenId;
         string name;
-        string encryptedDescription;
         string imageUrl;
-        address owner;
+        string encryptedDescription;
+        string encryptedSymmetricKey;
     }
 
     function getTokenURI(
         string memory name,
+        string memory imageUrl,
         string memory encryptedDescription,
-        string memory imageUrl
+        string memory encryptedSymmetricKey
     ) private pure returns (string memory) {
         bytes memory dataURI = abi.encodePacked(
             '{',
                 '"name": "', name, '",',
+                '"image": "', imageUrl, '",',
                 '"description": "', encryptedDescription, '",',
-                '"image": "', imageUrl, '"',
+                '"symmetricKey": "', encryptedSymmetricKey, '"',
             '}'
         );
         return string(
@@ -46,14 +47,15 @@ contract LitNft is ERC721URIStorage, ReentrancyGuard {
 
     function mintLitNft(
         string memory name,
+        string memory imageUrl,
         string memory encryptedDescription,
-        string memory imageUrl
+        string memory encryptedSymmetricKey
     ) public nonReentrant {
         _tokenIds.increment();
         uint256 newNftTokenId = _tokenIds.current();
         _safeMint(msg.sender, newNftTokenId);
-        _setTokenURI(newNftTokenId, getTokenURI(name, encryptedDescription, imageUrl));
-        tokenIdToNft[newNftTokenId] = nft(newNftTokenId, name, encryptedDescription, imageUrl, msg.sender);
+        _setTokenURI(newNftTokenId, getTokenURI(name, imageUrl, encryptedDescription, encryptedSymmetricKey));
+        tokenIdToNft[newNftTokenId] = nft(name, imageUrl, encryptedDescription, encryptedSymmetricKey);
     }
 
     function fetchNfts() public view returns (nft[] memory) {

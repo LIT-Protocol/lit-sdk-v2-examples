@@ -11,9 +11,10 @@ export default function Nft({ nft }) {
     console.log("0");
     console.log(encryptedDescriptionString);
 
-    const encryptedDescriptionBlob = new Blob([encryptedDescriptionString], {
-      type: 'text/plain'
-    });
+    // const encryptedDescriptionBlob = new Blob([encryptedDescriptionString], {
+    //   type: 'text/plain'
+    // });
+    const encryptedDescriptionBlob = await (await fetch(encryptedDescriptionString)).blob();
     console.log("1");
     console.log(encryptedDescriptionBlob);
     // const encryptedSymmetricKeyUintArray = new TextEncoder().encode(encryptedSymmetricKeyString);

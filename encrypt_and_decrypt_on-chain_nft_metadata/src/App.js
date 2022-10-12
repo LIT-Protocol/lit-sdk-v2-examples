@@ -10,7 +10,7 @@ function App() {
   const litNFTContractAddress = "0xBb6fd36bf6E45FBd29321c8f915E456ED42fDc13";
 
   const web3Modal = new Web3Modal({ network: "mumbai", cacheProvider: true });
-  const sampleNft = { name: "Test NFT", imageUrl: "https://picsum.photos/id/237/200/300", description: "Test" };
+  const sampleNft = { name: "Test NFT-2", imageUrl: "https://picsum.photos/seed/picsum/200/300", description: "Akash" };
 
   const [litNftContract, setLitNftContract] = useState(null);
   const [nfts, setNfts] = useState([]);
@@ -48,8 +48,27 @@ function App() {
     console.log(encryptedSymmetricKey);
 
     console.log("d");
-    const encryptedDescriptionString = await encryptedString.text();
+    // const encryptedDescriptionString = await encryptedString.text();
+    // console.log(encryptedDescriptionString);
+    // console.log(typeof(encryptedDescriptionString));
+
+    const blobToBase64 = blob => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      return new Promise(resolve => {
+        reader.onloadend = () => {
+          resolve(reader.result);
+        };
+      });
+    };
+    // blobToBase64(encryptedString).then(res => {
+    //   // do what you wanna do
+    //   console.log(res); // res is base64 now
+    //   console.log(typeof(res)); // res is base64 now
+    // });
+    const encryptedDescriptionString = await blobToBase64(encryptedString);
     console.log(encryptedDescriptionString);
+    console.log(typeof(encryptedDescriptionString));
 
     console.log("e");
 		let transaction = await litNftContract.mintLitNft(sampleNft.name, sampleNft.imageUrl, encryptedDescriptionString, encryptedSymmetricKey);
@@ -75,6 +94,19 @@ function App() {
     setNfts(_nfts);
   }
 
+  const encryptAndDecrypt = async () => {
+    const text = "Hello";
+    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text);
+    try {
+      const decryptedString = await lit.decryptText(encryptedString, encryptedSymmetricKey);
+      console.log("decryptedString: ");
+      console.log(decryptedString);
+    } catch (error) {
+      console.log("error: ");
+      console.log(error);
+    }
+  }
+
   return (
     <div className="App">
       <h1>Encrypt & Decrypt an On-Chain NFT Metadata using Lit SDK</h1>
@@ -86,6 +118,7 @@ function App() {
         })}
       </div>
       <button onClick={mintLitNft}>Mint Lit NFT</button>
+      {/* <button onClick={encryptAndDecrypt}>Encrypt & Decrypt</button> */}
     </div>
   );
 }

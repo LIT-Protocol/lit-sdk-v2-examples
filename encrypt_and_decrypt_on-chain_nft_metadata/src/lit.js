@@ -66,10 +66,15 @@ class Lit {
     console.log(encryptedSymmetricKey);
     console.log(symmetricKey);
     debugger;
-    const decryptedString = await LitJsSdk.decryptString(
-        encryptedString,
-        symmetricKey
-    );
+    let decryptedString;
+    try {
+      decryptedString = await LitJsSdk.decryptString(
+          encryptedString,
+          symmetricKey
+      );
+    } catch(error) {
+      console.log(error);
+    }
     debugger;
     console.log("w");
     console.log(decryptedString);

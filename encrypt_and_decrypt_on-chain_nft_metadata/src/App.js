@@ -42,6 +42,7 @@ function App() {
   const mintLitNft = async () => {
     const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(sampleNft.description);
 
+    // Convert blob to base64 to pass as a string to Solidity
     const blobToBase64 = blob => {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
@@ -52,6 +53,7 @@ function App() {
       });
     };
     const encryptedDescriptionString = await blobToBase64(encryptedString);
+
 		let transaction = await litNftContract.mintLitNft(sampleNft.name, sampleNft.imageUrl, encryptedDescriptionString, encryptedSymmetricKey);
     await transaction.wait();
 

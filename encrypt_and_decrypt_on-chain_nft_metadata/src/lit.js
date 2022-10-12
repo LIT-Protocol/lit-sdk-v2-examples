@@ -59,16 +59,10 @@ class Lit {
         authSig
     });
 
-    let decryptedString;
-    try {
-      decryptedString = await LitJsSdk.decryptString(
-          encryptedString,
-          symmetricKey
-      );
-    } catch(error) {
-      console.error(error);
-    }
-    return decryptedString;
+    return await LitJsSdk.decryptString(
+        encryptedString,
+        symmetricKey
+    );
   }
 }
 

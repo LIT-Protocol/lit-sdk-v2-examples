@@ -8,25 +8,12 @@ export default function Nft({ nft }) {
   const [description, setDescription] = useState("Click the Decrypt button below to decrypt the NFT description.");
 
   const decryptDescription = async (encryptedDescriptionString, encryptedSymmetricKeyString) => {
-    console.log("0");
-    console.log(encryptedDescriptionString);
-
-    // const encryptedDescriptionBlob = new Blob([encryptedDescriptionString], {
-    //   type: 'text/plain'
-    // });
     const encryptedDescriptionBlob = await (await fetch(encryptedDescriptionString)).blob();
-    console.log("1");
-    console.log(encryptedDescriptionBlob);
-    // const encryptedSymmetricKeyUintArray = new TextEncoder().encode(encryptedSymmetricKeyString);
-    // console.log(encryptedSymmetricKeyUintArray);
 
     let decryptedDescription;
     try {
-      console.log("2");
       decryptedDescription = await lit.decryptText(encryptedDescriptionBlob, encryptedSymmetricKeyString);
     } catch (error) {
-      console.log("3: error");
-      console.log(error);
       decryptedDescription = noAuthError;
     }
     setDescription(decryptedDescription);

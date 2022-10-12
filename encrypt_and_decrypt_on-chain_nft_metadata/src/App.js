@@ -23,9 +23,7 @@ function App() {
 
   useEffect(() => {
     const fetchNfts = async () => {
-      console.log("a");
       const fetchedNfts = await litNftContract.fetchNfts();
-      console.log(fetchedNfts);
       getDisplayNfts(fetchedNfts);
     }
     if (litNftContract !== null) {
@@ -42,15 +40,7 @@ function App() {
   }
 
   const mintLitNft = async () => {
-    console.log("c");
     const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(sampleNft.description);
-    console.log(encryptedString);
-    console.log(encryptedSymmetricKey);
-
-    console.log("d");
-    // const encryptedDescriptionString = await encryptedString.text();
-    // console.log(encryptedDescriptionString);
-    // console.log(typeof(encryptedDescriptionString));
 
     const blobToBase64 = blob => {
       const reader = new FileReader();
@@ -61,22 +51,11 @@ function App() {
         };
       });
     };
-    // blobToBase64(encryptedString).then(res => {
-    //   // do what you wanna do
-    //   console.log(res); // res is base64 now
-    //   console.log(typeof(res)); // res is base64 now
-    // });
     const encryptedDescriptionString = await blobToBase64(encryptedString);
-    console.log(encryptedDescriptionString);
-    console.log(typeof(encryptedDescriptionString));
-
-    console.log("e");
 		let transaction = await litNftContract.mintLitNft(sampleNft.name, sampleNft.imageUrl, encryptedDescriptionString, encryptedSymmetricKey);
     await transaction.wait();
 
-    console.log("f");
     const _nfts = await litNftContract.fetchNfts();
-    console.log(_nfts);
     await getDisplayNfts(_nfts);
   }
 
@@ -89,22 +68,7 @@ function App() {
       _nfts.push(nft);
     }
 
-    console.log("b");
-    console.log(_nfts);
     setNfts(_nfts);
-  }
-
-  const encryptAndDecrypt = async () => {
-    const text = "Hello";
-    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text);
-    try {
-      const decryptedString = await lit.decryptText(encryptedString, encryptedSymmetricKey);
-      console.log("decryptedString: ");
-      console.log(decryptedString);
-    } catch (error) {
-      console.log("error: ");
-      console.log(error);
-    }
   }
 
   return (
@@ -118,7 +82,6 @@ function App() {
         })}
       </div>
       <button onClick={mintLitNft}>Mint Lit NFT</button>
-      {/* <button onClick={encryptAndDecrypt}>Encrypt & Decrypt</button> */}
     </div>
   );
 }

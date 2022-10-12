@@ -51,9 +51,7 @@ class Lit {
       await this.connect();
     }
 
-    console.log("x");
     const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain });
-    console.log("y");
     const symmetricKey = await this.litNodeClient.getEncryptionKey({
         accessControlConditions: accessControlConditions,
         toDecrypt: encryptedSymmetricKey,
@@ -61,11 +59,6 @@ class Lit {
         authSig
     });
 
-    console.log("z");
-    console.log(encryptedString);
-    console.log(encryptedSymmetricKey);
-    console.log(symmetricKey);
-    debugger;
     let decryptedString;
     try {
       decryptedString = await LitJsSdk.decryptString(
@@ -73,11 +66,8 @@ class Lit {
           symmetricKey
       );
     } catch(error) {
-      console.log(error);
+      console.error(error);
     }
-    debugger;
-    console.log("w");
-    console.log(decryptedString);
     return decryptedString;
   }
 }

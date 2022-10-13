@@ -26,14 +26,15 @@ img {
 .nft__details {
     display: flex;
     margin: 1em;
-    gap: 1.5em;
+    gap: 2em;
 }
 
 .nft__description {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    text-align: start;
+    width: 100%;
 }
 
 .nft__decrypt {
@@ -44,4 +45,6 @@ img {
     color: black;
     font-size: 15px;
     padding: 10px;
+    cursor: pointer;
+    margin-left: 30%;
 }

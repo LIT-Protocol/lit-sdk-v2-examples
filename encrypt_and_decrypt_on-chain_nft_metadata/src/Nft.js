@@ -7,6 +7,7 @@ export default function Nft({ nft }) {
   const otherError = "Some unexpected error occurred. Please try again!";
 
   const [description, setDescription] = useState("Click the Decrypt button below to decrypt the NFT description.");
+  const [showButton, setShowButton] = useState(true);
 
   const decryptDescription = async (encryptedDescriptionString, encryptedSymmetricKeyString) => {
     // Convert base64 to blob to pass in the litSDK decrypt function
@@ -15,6 +16,7 @@ export default function Nft({ nft }) {
     let decryptedDescription;
     try {
       decryptedDescription = await lit.decryptText(encryptedDescriptionBlob, encryptedSymmetricKeyString);
+      setShowButton(false);
     } catch (error) {
       if (error.errorCode === "incorrect_access_control_conditions") {
         decryptedDescription = noAuthError;
@@ -33,7 +35,9 @@ export default function Nft({ nft }) {
             <img src={nft.imageUrl} />
             <div className='nft__description'>
               { description }
-              <button className='nft__decrypt' onClick={() => decryptDescription(nft.encryptedDescription, nft.encryptedSymmetricKey)}>Decrypt</button>
+              {showButton && (
+                <button className='nft__decrypt' onClick={() => decryptDescription(nft.encryptedDescription, nft.encryptedSymmetricKey)}>Decrypt</button>
+              )}
             </div>
         </div>
     </div>

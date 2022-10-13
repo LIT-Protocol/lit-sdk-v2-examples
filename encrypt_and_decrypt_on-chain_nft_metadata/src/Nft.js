@@ -34,7 +34,7 @@ export default function Nft({ nft }) {
         <div className='nft__details'>
             <img src={nft.imageUrl} />
             <div className='nft__description'>
-              { description }
+              <textarea value={description} className='nft__description__text' type="text" readOnly />
               {showButton && (
                 <button className='nft__decrypt' onClick={() => decryptDescription(nft.encryptedDescription, nft.encryptedSymmetricKey)}>Decrypt</button>
               )}

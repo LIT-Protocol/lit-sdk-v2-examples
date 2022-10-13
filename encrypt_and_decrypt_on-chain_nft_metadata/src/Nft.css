@@ -37,6 +37,15 @@ img {
     width: 100%;
 }
 
+.nft__description__text {
+  font-family: "Poppins", sans-serif;
+	height: 10em;
+	border: none;
+	resize: none;
+	font-size: 15px;
+	color: #131316;
+}
+
 .nft__decrypt {
     margin-left: 18%;
 }

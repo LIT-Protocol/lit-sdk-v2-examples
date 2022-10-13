@@ -86,6 +86,7 @@ function App() {
   return (
     <div className="App">
       <h1>Encrypt & Decrypt an On-Chain NFT Metadata using Lit SDK</h1>
+      <button className='mintNft' onClick={showModal}>Mint Lit NFT</button>
       <div id='modal' className='hidden'>
         <Modal mintLitNft={mintLitNft} closeModal={closeModal} />
       </div>
@@ -96,7 +97,6 @@ function App() {
           )
         })}
       </div>
-      <button className='mintNft' onClick={showModal}>Mint Lit NFT</button>
     </div>
   );
 }

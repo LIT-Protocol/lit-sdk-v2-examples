@@ -17,6 +17,13 @@ h2 {
 	margin-right: 4em;
 }
 
+.modal__close {
+	position: fixed;
+	right: 35%;
+	font-size: 20px;
+	cursor: pointer;
+}
+
 .modal__input {
   font-family: "Poppins", sans-serif;
 	padding: 5px;

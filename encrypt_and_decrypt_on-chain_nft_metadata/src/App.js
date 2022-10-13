@@ -78,11 +78,16 @@ function App() {
     mintNftButton.classList.add('show');
   }
 
+  const closeModal = () => {
+    const mintNftButton = document.getElementById('modal');
+    mintNftButton.classList.remove('show');
+  }
+
   return (
     <div className="App">
       <h1>Encrypt & Decrypt an On-Chain NFT Metadata using Lit SDK</h1>
       <div id='modal' className='hidden'>
-        <Modal mintLitNft={mintLitNft} />
+        <Modal mintLitNft={mintLitNft} closeModal={closeModal} />
       </div>
       <div className='nfts'>
         {nfts.map((nft, idx) => {

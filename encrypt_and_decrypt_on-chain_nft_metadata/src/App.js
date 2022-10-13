@@ -91,7 +91,6 @@ function App() {
           )
         })}
       </div>
-      {/* <button className='mintNft' onClick={mintLitNft}>Mint Lit NFT</button> */}
       <button className='mintNft' onClick={showModal}>Mint Lit NFT</button>
     </div>
   );

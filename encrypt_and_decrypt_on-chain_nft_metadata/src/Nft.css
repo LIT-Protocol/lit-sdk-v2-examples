@@ -38,13 +38,5 @@ img {
 }
 
 .nft__decrypt {
-    border-radius: 10px;
-    width: 5em;
-    background-color: #24a0ed;
-    border: none;
-    color: black;
-    font-size: 15px;
-    padding: 10px;
-    cursor: pointer;
-    margin-left: 30%;
+    margin-left: 18%;
 }

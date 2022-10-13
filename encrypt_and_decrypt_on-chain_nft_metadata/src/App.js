@@ -11,7 +11,6 @@ function App() {
   const litNFTContractAddress = "0xBb6fd36bf6E45FBd29321c8f915E456ED42fDc13";
 
   const web3Modal = new Web3Modal({ network: "mumbai", cacheProvider: true });
-  const sampleNft = { name: "Test NFT-2", imageUrl: "https://picsum.photos/seed/picsum/200/300", description: "Akash" };
 
   const [litNftContract, setLitNftContract] = useState(null);
   const [nfts, setNfts] = useState([]);
@@ -40,8 +39,8 @@ function App() {
     setLitNftContract(_litNftContract);
   }
 
-  const mintLitNft = async () => {
-    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(sampleNft.description);
+  const mintLitNft = async (name, imageUrl, description) => {
+    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(description);
 
     // Convert blob to base64 to pass as a string to Solidity
     const blobToBase64 = blob => {
@@ -55,7 +54,7 @@ function App() {
     };
     const encryptedDescriptionString = await blobToBase64(encryptedString);
 
-		let transaction = await litNftContract.mintLitNft(sampleNft.name, sampleNft.imageUrl, encryptedDescriptionString, encryptedSymmetricKey);
+		let transaction = await litNftContract.mintLitNft(name, imageUrl, encryptedDescriptionString, encryptedSymmetricKey);
     await transaction.wait();
 
     const _nfts = await litNftContract.fetchNfts();
@@ -83,7 +82,7 @@ function App() {
     <div className="App">
       <h1>Encrypt & Decrypt an On-Chain NFT Metadata using Lit SDK</h1>
       <div id='modal' className='hidden'>
-        <Modal />
+        <Modal mintLitNft={mintLitNft} />
       </div>
       <div className='nfts'>
         {nfts.map((nft, idx) => {

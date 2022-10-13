@@ -29,3 +29,7 @@ h2 {
   border-radius: 5px;
   color: #131316;
 }
+
+.modal__button {
+	margin-left: 30%;
+}

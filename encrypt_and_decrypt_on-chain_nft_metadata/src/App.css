@@ -14,7 +14,7 @@ h1 {
   color: #ffffff;
 }
 
-.mintNft {
+button {
   border-radius: 10px;
   width: 15em;
   background-color: #24a0ed;
@@ -23,6 +23,9 @@ h1 {
   font-size: 15px;
   padding: 10px;
   cursor: pointer;
+}
+
+.mintNft {
   margin: 2em 0;
 }
 

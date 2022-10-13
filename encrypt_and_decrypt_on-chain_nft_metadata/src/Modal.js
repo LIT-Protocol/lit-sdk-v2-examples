@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Modal.css';
 
-export default function Modal() {
+export default function Modal({ mintLitNft }) {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 	const [imageUrl, setImageUrl] = useState("");
@@ -9,9 +9,10 @@ export default function Modal() {
   return (
     <div className='modal hidden'>
 			<h2>Enter NFT Details</h2>
-			<input className='modal__input' type="text" placeholder="Name" onChange={e => setName(e.target.value)} />
-			<textarea className='modal__description' type="text" onChange={e => setDescription(e.target.value)} placeholder="Description" />
-			<input className='modal__input' type="text" placeholder="Image URL" onChange={e => setImageUrl(e.target.value)} />
+			<input value={name} className='modal__input' type="text" required placeholder="Name" onChange={e => setName(e.target.value)} />
+			<textarea value={description} className='modal__description' type="text" required onChange={e => setDescription(e.target.value)} placeholder="Description" />
+			<input value={imageUrl} className='modal__input' type="text" required placeholder="Image URL" onChange={e => setImageUrl(e.target.value)} />
+			<button disabled={!name || !description || !imageUrl} onClick={() => mintLitNft(name, imageUrl, description)} className='modal__button'>Decrypt</button>
     </div>
   )
 }

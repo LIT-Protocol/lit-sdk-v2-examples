@@ -86,17 +86,25 @@ function App() {
   return (
     <div className="App">
       <h1>Encrypt & Decrypt an On-Chain NFT Metadata using Lit SDK</h1>
-      <button className='mintNft' onClick={showModal}>Mint Lit NFT</button>
-      <div id='modal' className='hidden'>
-        <Modal mintLitNft={mintLitNft} closeModal={closeModal} />
-      </div>
-      <div className='nfts'>
-        {nfts.map((nft, idx) => {
-          return (
-            <Nft nft={nft} key={idx} />
-          )
-        })}
-      </div>
+      {!litNftContract ? (
+        <div>
+          <button className='mintNft' onClick={connectWallet}>Connect Wallet</button>
+        </div>
+      ) : (
+        <div>
+          <button className='mintNft' onClick={showModal}>Mint Lit NFT</button>
+          <div id='modal' className='hidden'>
+            <Modal mintLitNft={mintLitNft} closeModal={closeModal} />
+          </div>
+          <div className='nfts'>
+            {nfts.map((nft, idx) => {
+              return (
+                <Nft nft={nft} key={idx} />
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

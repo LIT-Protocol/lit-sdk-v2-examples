@@ -5,6 +5,7 @@ import Web3Modal from "web3modal";
 import LitNft from "./artifacts/contracts/LitNft.sol/LitNft.json";
 import { useEffect, useState } from 'react';
 import lit from './lit';
+import Modal from './Modal';
 
 function App() {
   const litNFTContractAddress = "0xBb6fd36bf6E45FBd29321c8f915E456ED42fDc13";
@@ -73,9 +74,17 @@ function App() {
     setNfts(_nfts);
   }
 
+  const showModal = () => {
+    const mintNftButton = document.getElementById('modal');
+    mintNftButton.classList.add('show');
+  }
+
   return (
     <div className="App">
       <h1>Encrypt & Decrypt an On-Chain NFT Metadata using Lit SDK</h1>
+      <div id='modal' className='hidden'>
+        <Modal />
+      </div>
       <div className='nfts'>
         {nfts.map((nft, idx) => {
           return (
@@ -83,7 +92,8 @@ function App() {
           )
         })}
       </div>
-      <button onClick={mintLitNft}>Mint Lit NFT</button>
+      {/* <button className='mintNft' onClick={mintLitNft}>Mint Lit NFT</button> */}
+      <button className='mintNft' onClick={showModal}>Mint Lit NFT</button>
     </div>
   );
 }

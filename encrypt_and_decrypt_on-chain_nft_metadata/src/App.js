@@ -9,6 +9,17 @@ import Modal from './Modal';
 
 function App() {
   const litNFTContractAddress = "0xBb6fd36bf6E45FBd29321c8f915E456ED42fDc13";
+  const mumbaiTestnet = {
+    chainId: "0x13881",
+    chainName: "Matic Mumbai",
+    nativeCurrency: {
+      name: "MATIC",
+      symbol: "MATIC",
+      decimals: 18
+    },
+    rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+    blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
+  }
 
   const web3Modal = new Web3Modal({ network: "mumbai", cacheProvider: true });
 
@@ -33,10 +44,37 @@ function App() {
 
   const connectWallet = async () => {
     const connection = await web3Modal.connect();
+    await switchToMumbaiTestnet();
+
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
     const _litNftContract = new ethers.Contract(litNFTContractAddress, LitNft.abi, signer);
     setLitNftContract(_litNftContract);
+  }
+
+  const switchToMumbaiTestnet = async () => {
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: mumbaiTestnet.chainId }], // chainId must be in hexadecimal numbers
+        });
+      } catch (error) {
+        if (error.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [mumbaiTestnet],
+            });
+          } catch (addError) {
+            console.error(addError);
+          }
+        }
+        console.error(error);
+      }
+    } else {
+      alert("Please install Metamask");
+    }
   }
 
   const mintLitNft = async (name, imageUrl, description) => {

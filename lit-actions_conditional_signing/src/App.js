@@ -8,6 +8,7 @@ function App() {
 
   const minBalanceRef = useRef();
   const nameRef = useRef();
+  const timeRef = useRef();
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -16,26 +17,31 @@ function App() {
   const runLitActions = async (e) => {
     e.preventDefault();
     const litActionCode = `
-      const go = async () => {
+      const checkAndSignResponse = async () => {
         const satisfyConditions = await LitActions.checkConditions({ conditions, authSig, chain });
         const currentTimestamp = (new Date()).getTime();
-        const afterOneMinute = (currentTimestamp - signedTimestamp) >= 10 * 1000;
+        const afterOneMinute = Math.abs(currentTimestamp - timestamp) >= 2 * 60 * 1000;
         if (!satisfyConditions || afterOneMinute) {
           return;
         }
 
-        toSign = { minBalance, fullName, signedTimestamp, currentTimestamp };
+        toSign = { minBalance, fullName, timestamp, currentTimestamp };
         const sigShare = await LitActions.signEcdsa({ toSign, publicKey, sigName });
         LitActions.setResponse({ response: JSON.stringify(toSign) });
       };
 
-      go();
+      checkAndSignResponse();
     `;
 
     const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: "ethereum" });
     const litNodeClient = new LitJsSdk.LitNodeClient({ litNetwork: "serrano" });
     await litNodeClient.connect();
-    const { signatures, response } = await litNodeClient.executeJs({
+
+    const date = new Date();
+    const dateInString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    const timestamp = new Date(dateInString + " " + timeRef.current.value);
+
+    const { signatures, response, logs } = await litNodeClient.executeJs({
       code: litActionCode,
       authSig,
       jsParams: {
@@ -55,7 +61,7 @@ function App() {
         ],
         minBalance: minBalanceRef.current.value,
         fullName: nameRef.current.value,
-        signedTimestamp: (new Date()).getTime(),
+        timestamp: timestamp.getTime(),
         authSig,
         chain: "ethereum",
         publicKey: "0x032d68a742f4bfb0b2c4948ddc0dd69881b5292ef709fa64d9c37da88f1ac0aad5",
@@ -64,13 +70,13 @@ function App() {
     });
 
     setReturnedJson(response !== "" ? JSON.stringify(response, null, 4) : "Doesn't satisfy Access Conditions");
-    setSignature(response !== "" ? signatures?.sig1?.signature: "Doesn't satisfy Access Conditions");
+    setSignature(response !== "" ? signatures?.sig1?.signature : "Doesn't satisfy Access Conditions");
   }
 
   return (
     <div className="App">
       <h1>Conditionally Signed Response using Lit Actions</h1>
-      <h2 className="info">Displays the returned JSON if your Ether balance {'>'}= Min balance you entered & if you signed the transaction within 10 seconds</h2>
+      <h2 className="info">Displays the returned JSON if your Ether balance {'>'}= Min balance you entered & if you signed the transaction within 2 mins of your set time</h2>
       <div className="container">
         <div className="response">
           <h2>Returned JSON</h2>
@@ -90,6 +96,8 @@ function App() {
             <input ref={minBalanceRef} type="number" min="0" step="0.001" required placeholder="Min balance for signing" />
             <h2>Full Name</h2>
             <input ref={nameRef} type="text" required placeholder="Enter your full name" />
+            <h2>Time</h2>
+            <input ref={timeRef} type="time" required placeholder="Enter a time" />
             <button type="submit">Run Lit Actions</button>
           </form>
         </div>

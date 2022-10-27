@@ -74,6 +74,7 @@ input {
   color: #131316;
   padding-bottom: 1em;
   padding-right: 1em;
+  cursor: pointer;
 }
 
 .jsonResponse {

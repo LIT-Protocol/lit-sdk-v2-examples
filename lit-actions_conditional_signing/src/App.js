@@ -9,6 +9,10 @@ function App() {
   const minBalanceRef = useRef();
   const nameRef = useRef();
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
   const runLitActions = async (e) => {
     e.preventDefault();
     const litActionCode = `
@@ -72,12 +76,12 @@ function App() {
           <h2>Returned JSON</h2>
           <div className="responseText__container">
             <textarea readOnly value={returnedJson} className="jsonResponse" />
-            <div className="copy">Copy to Clipboard</div>
+            <div onClick={() => copyToClipboard(returnedJson)} className="copy">Copy to Clipboard</div>
           </div>
           <h2>Signature</h2>
           <div className="responseText__container">
             <textarea readOnly value={signature} />
-            <div className="copy">Copy to Clipboard</div>
+            <div onClick={() => copyToClipboard(signature)} className="copy">Copy to Clipboard</div>
           </div>
         </div>
         <div>

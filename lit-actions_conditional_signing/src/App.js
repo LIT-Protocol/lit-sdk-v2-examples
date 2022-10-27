@@ -60,7 +60,7 @@ function App() {
     });
 
     setReturnedJson(response !== "" ? JSON.stringify(response, null, 4) : "Doesn't satisfy Access Conditions");
-    setSignature(response !== "" ? JSON.stringify(signatures?.sig1?.signature, null, 4): "Doesn't satisfy Access Conditions");
+    setSignature(response !== "" ? signatures?.sig1?.signature: "Doesn't satisfy Access Conditions");
   }
 
   return (

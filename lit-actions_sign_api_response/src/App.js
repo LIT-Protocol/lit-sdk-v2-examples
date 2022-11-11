@@ -39,7 +39,7 @@ function App() {
       authSig,
       jsParams: {
         day: parseInt(day),
-        publicKey: "0x032d68a742f4bfb0b2c4948ddc0dd69881b5292ef709fa64d9c37da88f1ac0aad5",
+        publicKey: "0x041270149148d3eece72d57471232d96308063cd16038f6f8f0daf4ce267e3e76273d02e89e482cb5e0bc944ca98df0594403021614e0a0409264cd13944000767",
         sigName: "sig1",
       },
     });

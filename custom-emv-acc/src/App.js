@@ -39,10 +39,16 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Encrypt & Decrypt a string using Lit SDK</h1>
-      <div className="textAreas">
-        <textarea type="text" onChange={e => setText(e.target.value)} placeholder="Type here..." />
-        <textarea readOnly value={decryptedText} className="readOnly" />
+      <h1>Custom EVM Access Control Conditions with Lit SDK</h1>
+      <div className="accInput">
+        <textarea type="text" onChange={e => setText(e.target.value)} placeholder="Access Control Conditions..." />
+        <select name="acc" id="acc-select">
+          <option value="">--Please choose an ACC type--</option>
+          <option value="evm-basic">Standard EVM</option>
+          <option value="evm-contract">Custom EVM</option>
+          <option value="solana">Solana</option>
+          <option value="cosmos">Cosmos</option>
+        </select>
       </div>
       <div>
         <button onClick={encryptText}>Encrypt</button>

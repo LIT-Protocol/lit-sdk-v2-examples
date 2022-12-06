@@ -10,13 +10,13 @@ body {
 
 h1 {
   margin-top: 2em;
-  margin-bottom: 3em;
+  margin-bottom: 1em;
   color: #ffffff;
 }
 
 textarea {
   width:30%;
-  height: 15em;
+  height: 25em;
   border-radius: 15px;
   padding: 15px;
   font-size: 16px;
@@ -45,11 +45,14 @@ button {
   text-align: center;
 }
 
-.textAreas {
+.accInput {
   display: flex;
   justify-content: center;
+  gap: 5em;
+  margin-right: 10em;
 }
 
-.readOnly {
-  background-color: lightgray;
+select {
+  height: 2em;
+  margin-top: 3em;
 }

@@ -119,6 +119,11 @@ function App() {
         <button onClick={encryptText}>Encrypt</button>
         <button onClick={decryptText}>Decrypt</button>
       </div>
+      <h3>Verify your condition on:{" "}
+        <a href="https://lit-accs-debugger.vercel.app/" target="_blank">
+          https://lit-accs-debugger.vercel.app/
+        </a>
+      </h3>
     </div>
   );
 }

@@ -55,4 +55,6 @@ button {
 select {
   height: 2em;
   margin-top: 3em;
+  border-radius: 5px;
+  margin-bottom: 5em;
 }

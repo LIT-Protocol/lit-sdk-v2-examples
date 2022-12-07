@@ -3,22 +3,61 @@ import lit from './lit';
 import './App.css';
 
 function App() {
+  const text = "Encrypt with Lit!";
   const noAuthError = "The access control condition check failed! You should have at least 1 Zora Custom Drop NFT to decrypt this string.";
 
-  const [text, setText] = useState("");
+  const [accText, setAccText] = useState("");
+  const [accType, setAccType] = useState("");
   const [encryptedText, setEncryptedText] = useState(null);
   const [encryptedSymmetricKey, setEncryptedSymmetricKey] = useState("");
   const [decryptedText, setDecryptedText] = useState("");
 
+  const getAccObject = () => {
+    const accObject = {
+      accessControlConditions: undefined,
+      evmContractConditions: undefined,
+      solRpcConditions: undefined,
+      unifiedAccessControlConditions: undefined
+    };
+
+    let formattedAcc = accText.replace((/  |\r\n|\n|\r/gm),"");
+    // formattedAcc = formattedAcc.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'').trim();
+    console.log("formattedAcc- ", formattedAcc);
+    const formattedAccObj = JSON.parse(JSON.stringify(eval(formattedAcc)));
+    console.log("formattedAccObj- ", formattedAccObj);
+    switch (accType) {
+      case "evm-basic":
+        accObject.accessControlConditions = formattedAccObj;
+        break;
+      case "evm-contract":
+        accObject.evmContractConditions = formattedAccObj;
+        break;
+      case "solana":
+        accObject.solRpcConditions = formattedAccObj;
+        break;
+      default:
+        break;
+    }
+    return accObject;
+  };
+
   const encryptText = async () => {
-    if (text.length === 0) {
-      alert("Please enter a non-empty string!");
+    if (accText.length === 0) {
+      alert("Please enter a non-empty ACC!");
+      return;
+    }
+
+    if (accType === "") {
+      alert("Please select an ACC type");
       return;
     }
 
     setDecryptedText("");
 
-    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text);
+    const accObject = getAccObject();
+    console.log("accObject");
+    console.log(accObject);
+    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, accObject);
     setEncryptedText(encryptedString);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
   }
@@ -30,7 +69,8 @@ function App() {
     }
 
     try {
-      const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey);
+      const accObject = getAccObject();
+      const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey, accObject);
       setDecryptedText(decryptedString);
     } catch (error) {
       alert(noAuthError);
@@ -41,25 +81,26 @@ function App() {
     <div className="App">
       <h1>Custom EVM Access Control Conditions with Lit SDK</h1>
       <div className="accInput">
-        <textarea type="text" onChange={e => setText(e.target.value)} placeholder="Access Control Conditions..." />
-        <select name="acc" id="acc-select">
-          <option value="">--Please choose an ACC type--</option>
-          <option value="evm-basic">Standard EVM</option>
-          <option value="evm-contract">Custom EVM</option>
-          <option value="solana">Solana</option>
-          <option value="cosmos">Cosmos</option>
-        </select>
+        <textarea type="text" onChange={e => setAccText(e.target.value)} placeholder="Access Control Conditions..." />
+        <div className="accDisplay">
+          <select value={accType} onChange={(e) => setAccType(e.target.value)}>
+            <option value="">--Please choose an ACC type--</option>
+            <option value="evm-basic">Standard EVM</option>
+            <option value="evm-contract">Custom EVM</option>
+            <option value="solana">Solana</option>
+          </select>
+          {(encryptedText !== null && decryptedText.length === 0) && (
+            <h3>String Encrypted: {encryptedText.size} bytes.</h3>
+          )}
+          {decryptedText.length > 0 && (
+            <h3>String Decrypted: {decryptedText}</h3>
+          )}
+        </div>
       </div>
       <div>
         <button onClick={encryptText}>Encrypt</button>
         <button onClick={decryptText}>Decrypt</button>
       </div>
-      {(encryptedText !== null && decryptedText.length === 0) && (
-        <h3>String Encrypted: {encryptedText.size} bytes. Thanks for using Lit!</h3>
-      )}
-      {decryptedText.length > 0 && (
-        <h3>String Decrypted: See the right text area</h3>
-      )}
     </div>
   );
 }

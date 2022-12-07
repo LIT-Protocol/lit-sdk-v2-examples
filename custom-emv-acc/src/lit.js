@@ -14,7 +14,7 @@ class Lit {
     if (!this.litNodeClient) {
         await this.connect();
     }
-    console.log("chain1- ", chain);
+    console.log("chain- ", chain);
     const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain });
     const { encryptedString, symmetricKey } = await LitJsSdk.encryptString(text);
 

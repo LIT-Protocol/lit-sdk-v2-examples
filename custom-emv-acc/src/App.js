@@ -22,9 +22,7 @@ function App() {
     const formattedAcc = getFormattedString();
     const index = formattedAcc.search("chain");
     const endIndex = formattedAcc.indexOf('"', index + 8);
-    const res = formattedAcc.slice(index + 8, endIndex);
-    console.log("chain- ", res);
-    return res;
+    return formattedAcc.slice(index + 8, endIndex);
   }
 
   const getAccObject = () => {
@@ -69,8 +67,6 @@ function App() {
     setDecryptedText("");
 
     const accObject = getAccObject();
-    console.log("accObject");
-    console.log(accObject);
     try {
       const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, getChain(), accObject);
       setEncryptedText(encryptedString);

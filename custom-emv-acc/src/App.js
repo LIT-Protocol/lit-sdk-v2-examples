@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   const text = "Encrypt with Lit!";
-  const noAuthError = "The access control condition check failed!";
+  const mismatchError = "Ensure that the ACC type corresponds to your input condition!";
 
   const [accText, setAccText] = useState("");
   const [accType, setAccType] = useState("");
@@ -71,9 +71,13 @@ function App() {
     const accObject = getAccObject();
     console.log("accObject");
     console.log(accObject);
-    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, getChain(), accObject);
-    setEncryptedText(encryptedString);
-    setEncryptedSymmetricKey(encryptedSymmetricKey);
+    try {
+      const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, getChain(), accObject);
+      setEncryptedText(encryptedString);
+      setEncryptedSymmetricKey(encryptedSymmetricKey);
+    } catch (error) {
+      alert(mismatchError);
+    }
   }
 
   const decryptText = async () => {
@@ -87,7 +91,7 @@ function App() {
       const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey, getChain(), accObject);
       setDecryptedText(decryptedString);
     } catch (error) {
-      alert(noAuthError);
+      alert(mismatchError);
     }
   }
 

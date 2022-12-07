@@ -97,7 +97,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Custom EVM Access Control Conditions with Lit SDK</h1>
+      <h1>Custom Access Control Conditions with Lit SDK</h1>
       <div className="accInput">
         <textarea type="text" onChange={e => setAccText(e.target.value)} placeholder="Access Control Conditions..." />
         <div className="accDisplay">

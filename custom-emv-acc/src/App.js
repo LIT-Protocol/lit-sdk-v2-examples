@@ -4,13 +4,28 @@ import './App.css';
 
 function App() {
   const text = "Encrypt with Lit!";
-  const noAuthError = "The access control condition check failed! You should have at least 1 Zora Custom Drop NFT to decrypt this string.";
+  const noAuthError = "The access control condition check failed!";
 
   const [accText, setAccText] = useState("");
   const [accType, setAccType] = useState("");
   const [encryptedText, setEncryptedText] = useState(null);
   const [encryptedSymmetricKey, setEncryptedSymmetricKey] = useState("");
   const [decryptedText, setDecryptedText] = useState("");
+
+  const getFormattedString = () => {
+    let formattedAcc = accText.replace((/  |\r\n|\n|\r/gm),"");
+    // formattedAcc = formattedAcc.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'').trim();
+    return formattedAcc;
+  }
+
+  const getChain = () => {
+    const formattedAcc = getFormattedString();
+    const index = formattedAcc.search("chain");
+    const endIndex = formattedAcc.indexOf('"', index + 8);
+    const res = formattedAcc.slice(index + 8, endIndex);
+    console.log("chain- ", res);
+    return res;
+  }
 
   const getAccObject = () => {
     const accObject = {
@@ -20,8 +35,7 @@ function App() {
       unifiedAccessControlConditions: undefined
     };
 
-    let formattedAcc = accText.replace((/  |\r\n|\n|\r/gm),"");
-    // formattedAcc = formattedAcc.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'').trim();
+    const formattedAcc = getFormattedString();
     console.log("formattedAcc- ", formattedAcc);
     const formattedAccObj = JSON.parse(JSON.stringify(eval(formattedAcc)));
     console.log("formattedAccObj- ", formattedAccObj);
@@ -57,7 +71,7 @@ function App() {
     const accObject = getAccObject();
     console.log("accObject");
     console.log(accObject);
-    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, accObject);
+    const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, getChain(), accObject);
     setEncryptedText(encryptedString);
     setEncryptedSymmetricKey(encryptedSymmetricKey);
   }
@@ -70,7 +84,7 @@ function App() {
 
     try {
       const accObject = getAccObject();
-      const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey, accObject);
+      const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey, getChain(), accObject);
       setDecryptedText(decryptedString);
     } catch (error) {
       alert(noAuthError);

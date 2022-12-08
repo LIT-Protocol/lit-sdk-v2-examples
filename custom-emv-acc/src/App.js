@@ -12,19 +12,77 @@ function App() {
   const [encryptedSymmetricKey, setEncryptedSymmetricKey] = useState("");
   const [decryptedText, setDecryptedText] = useState("");
 
-  // const getFormattedString = () => {
-  //   let formattedAcc = formattedAcc.replace((/ |\r\n|\n|\r/gm),"");
-  //   console.log("2- ", formattedAcc);
-  //   // formattedAcc = formattedAcc.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'').trim();
-  //   return formattedAcc;
-  // }
-
-  // const getChain = () => {
-  //   const formattedAcc = getFormattedString();
-  //   const index = formattedAcc.search("chain");
-  //   const endIndex = formattedAcc.indexOf('"', index + 7);
-  //   return formattedAcc.slice(index + 7, endIndex);
-  // }
+  const defaultAccList = {
+    "evm-basic": [
+      {
+        contractAddress: '',
+        standardContractType: '',
+        chain: 'ethereum',
+        method: 'eth_getBalance',
+        parameters: [
+          ':userAddress',
+          'latest'
+        ],
+        returnValueTest: {
+          comparator: '>=',
+          value: '0' // at least 0 ETH
+        }
+      }
+    ],
+    "evm-contract": [{
+      contractAddress: "0x115b90187d38dC0A9A9d6BdC8EC9b1f492964894",
+      chain: "ethereum",
+      functionName: "balanceOf",
+      // functionParams: ["0x5a94f1491044953d3874fabfac75df21bf31893b"],
+      functionParams: [":userAddress"],
+      functionAbi: {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        returnValueTest: {
+          key: "",
+          comparator: ">=",
+          value: "0",
+        },
+    }],
+    "solana": [
+      {
+        method: "getBalance",
+        params: [":userAddress"],
+        pdaParams: [],
+        pdaInterface: { offset: 0, fields: {} },
+        pdaKey: "",
+        chain: "solana",
+        returnValueTest: {
+          key: "",
+          comparator: ">=",
+          value: "0", // equals 0 SOL
+        },
+      },
+    ]
+  };
+  
+  const updateAccType = (newAccType) => {
+      console.log(newAccType);
+      setAccType(newAccType);
+      const defaultAcc = JSON.stringify(defaultAccList[newAccType]) || "";
+      setAccText(defaultAcc);
+  }
 
   const getAccObject = () => {
     const accObject = {
@@ -34,8 +92,6 @@ function App() {
       unifiedAccessControlConditions: undefined
     };
 
-    // const formattedAcc = getFormattedString();
-    // console.log("formattedAcc- ", formattedAcc);
     const formattedAccObj = JSON.parse(JSON.stringify(eval(accText)));
     console.log("formattedAccObj- ", formattedAccObj);
     switch (accType) {
@@ -96,9 +152,9 @@ function App() {
     <div className="App">
       <h1>Custom Access Control Conditions with Lit SDK</h1>
       <div className="accInput">
-        <textarea type="text" onChange={e => setAccText(e.target.value)} placeholder="Access Control Conditions..." />
+        <textarea value={accText} type="text" onChange={e => setAccText(e.target.value)} placeholder="Select an ACC type" />
         <div className="accDisplay">
-          <select value={accType} onChange={(e) => setAccType(e.target.value)}>
+          <select value={accType} onChange={(e) => updateAccType(e.target.value)}>
             <option value="">--Please choose an ACC type--</option>
             <option value="evm-basic">Standard EVM</option>
             <option value="evm-contract">Custom EVM</option>

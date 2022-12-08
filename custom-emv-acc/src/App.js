@@ -12,18 +12,19 @@ function App() {
   const [encryptedSymmetricKey, setEncryptedSymmetricKey] = useState("");
   const [decryptedText, setDecryptedText] = useState("");
 
-  const getFormattedString = () => {
-    let formattedAcc = accText.replace((/  |\r\n|\n|\r/gm),"");
-    // formattedAcc = formattedAcc.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'').trim();
-    return formattedAcc;
-  }
+  // const getFormattedString = () => {
+  //   let formattedAcc = formattedAcc.replace((/ |\r\n|\n|\r/gm),"");
+  //   console.log("2- ", formattedAcc);
+  //   // formattedAcc = formattedAcc.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,'').trim();
+  //   return formattedAcc;
+  // }
 
-  const getChain = () => {
-    const formattedAcc = getFormattedString();
-    const index = formattedAcc.search("chain");
-    const endIndex = formattedAcc.indexOf('"', index + 8);
-    return formattedAcc.slice(index + 8, endIndex);
-  }
+  // const getChain = () => {
+  //   const formattedAcc = getFormattedString();
+  //   const index = formattedAcc.search("chain");
+  //   const endIndex = formattedAcc.indexOf('"', index + 7);
+  //   return formattedAcc.slice(index + 7, endIndex);
+  // }
 
   const getAccObject = () => {
     const accObject = {
@@ -33,9 +34,9 @@ function App() {
       unifiedAccessControlConditions: undefined
     };
 
-    const formattedAcc = getFormattedString();
-    console.log("formattedAcc- ", formattedAcc);
-    const formattedAccObj = JSON.parse(JSON.stringify(eval(formattedAcc)));
+    // const formattedAcc = getFormattedString();
+    // console.log("formattedAcc- ", formattedAcc);
+    const formattedAccObj = JSON.parse(JSON.stringify(eval(accText)));
     console.log("formattedAccObj- ", formattedAccObj);
     switch (accType) {
       case "evm-basic":
@@ -50,7 +51,7 @@ function App() {
       default:
         break;
     }
-    return accObject;
+    return [accObject, formattedAccObj[0].chain];
   };
 
   const encryptText = async () => {
@@ -66,9 +67,9 @@ function App() {
 
     setDecryptedText("");
 
-    const accObject = getAccObject();
+    const [accObject, chain] = getAccObject();
     try {
-      const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, getChain(), accObject);
+      const { encryptedString, encryptedSymmetricKey } = await lit.encryptText(text, chain, accObject);
       setEncryptedText(encryptedString);
       setEncryptedSymmetricKey(encryptedSymmetricKey);
     } catch (error) {
@@ -83,8 +84,8 @@ function App() {
     }
 
     try {
-      const accObject = getAccObject();
-      const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey, getChain(), accObject);
+      const [accObject, chain] = getAccObject();
+      const decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey, chain, accObject);
       setDecryptedText(decryptedString);
     } catch (error) {
       alert(mismatchError);

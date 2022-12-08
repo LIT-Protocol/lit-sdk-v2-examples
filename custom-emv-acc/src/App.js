@@ -80,7 +80,7 @@ function App() {
   const updateAccType = (newAccType) => {
       console.log(newAccType);
       setAccType(newAccType);
-      const defaultAcc = JSON.stringify(defaultAccList[newAccType]) || "";
+      const defaultAcc = JSON.stringify(defaultAccList[newAccType], null, "  ") || "";
       setAccText(defaultAcc);
   }
 

@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+
+body {
+  background-color: #131316;
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  margin-top: 1em;
+  color: #ffffff;
+}
+
+input {
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 16px;
+  min-width: 20em;
+  height: 2em;
+  background-color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  color: #131316;
+  border: none;
+  margin-bottom: 0.75em;
+}
+
+button {
+  margin: 2em;
+  margin-bottom: 0;
+  font-size: 16px;
+  width: 7em;
+  height: 2.5em;
+  background-color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.App {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.inputContainer {
+  flex: 1;
+}
+
+.authSig {
+  flex: 1;
+}

@@ -24,17 +24,23 @@ function App() {
       return;
     }
 
+    setEncryptedText("");
+    setAuthSig("");
     setDecryptedText("");
 
-    const encryptedResult = await lit.encryptText(
-      encryptString.current.value,
-      chain.current.value,
-      hashString.current.value,
-      address.current.value
-    );
-    setEncryptedText(encryptedResult.encryptedString);
-    setAuthSig(encryptedResult.authSig);
-    encryptedSymmetricKey.current = encryptedResult.encryptedSymmetricKey;
+    try {
+      const encryptedResult = await lit.encryptText(
+        encryptString.current.value,
+        chain.current.value,
+        hashString.current.value,
+        address.current.value
+      );
+      setEncryptedText(encryptedResult.encryptedString);
+      setAuthSig(encryptedResult.authSig);
+      encryptedSymmetricKey.current = encryptedResult.encryptedSymmetricKey;
+    } catch(e) {
+      alert("Smart Contract not authorized or Invalid params passed! Please check the console for a more detailed error");
+    }
   }
 
   const decryptText = async () => {
@@ -65,7 +71,7 @@ function App() {
         <div className="inputContainer">
           <h2>String to encrypt</h2>
           <input type="text" ref={encryptString} />
-          <h2>Unhashed _hash parameter for isValidSugnature</h2>
+          <h2>Unhashed _hash parameter for isValidSignature</h2>
           <input type="text" ref={hashString} />
           <h2>Address of the Smart Contract</h2>
           <input type="text" ref={address} />

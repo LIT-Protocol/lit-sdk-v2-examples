@@ -3,40 +3,36 @@ import lit from './lit';
 import "./App.css";
 
 function App() {
-
-  // let encryptedString;
-  let encryptedSymmetricKey;
-
-  const encryptString = useRef();
-  const hashString = useRef();
-  const address = useRef();
-  const chain = useRef();
+  const encryptedSymmetricKey = useRef(null);
+  const encryptString = useRef(null);
+  const hashString = useRef(null);
+  const address = useRef(null);
+  const chain = useRef(null);
 
   const [encryptedText, setEncryptedText] = useState("");
   const [decryptedText, setDecryptedText] = useState("");
 
   const encryptText = async () => {
-    if (encryptString.length === 0) {
+    if (encryptString.current.value.length === 0) {
       alert("Please enter a non-empty string!");
       return;
     }
 
     setDecryptedText("");
 
-    const encryptedResult = await lit.encryptText(encryptString.current.value);
+    const encryptedResult = await lit.encryptText(encryptString.current.value, chain.current.value);
     setEncryptedText(encryptedResult.encryptedString);
-    // encryptedString = encryptedResult.encryptedString;
-    encryptedSymmetricKey = encryptedResult.encryptedSymmetricKey;
+    encryptedSymmetricKey.current = encryptedResult.encryptedSymmetricKey;
   }
 
   const decryptText = async () => {
-    if (encryptedText === null) {
+    if (encryptedText === "") {
       alert("Please encrypt your string first!");
       return;
     }
 
     try {
-      const _decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey);
+      const _decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey.current, chain.current.value);
       setDecryptedText(_decryptedString);
     } catch (error) {
       // alert(noAuthError);
@@ -65,7 +61,7 @@ function App() {
         <button onClick={encryptText}>Encrypt</button>
         <button onClick={decryptText}>Decrypt</button>
       </div>
-      {(encryptedText.size > 0 && decryptedText.length === 0) && (
+      {(encryptedText !== "" && decryptedText.length === 0) && (
         <h3>String Encrypted: {encryptedText.size} bytes. Thanks for using Lit!</h3>
       )}
       {decryptedText.length > 0 && (

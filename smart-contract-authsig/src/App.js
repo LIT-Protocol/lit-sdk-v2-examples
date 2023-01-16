@@ -10,6 +10,7 @@ function App() {
   const chain = useRef(null);
 
   const [encryptedText, setEncryptedText] = useState("");
+  const [authSig, setAuthSig] = useState("");
   const [decryptedText, setDecryptedText] = useState("");
 
   const encryptText = async () => {
@@ -18,10 +19,21 @@ function App() {
       return;
     }
 
+    if (address.current.value.length === 0) {
+      alert("Please enter a non-empty address!");
+      return;
+    }
+
     setDecryptedText("");
 
-    const encryptedResult = await lit.encryptText(encryptString.current.value, chain.current.value);
+    const encryptedResult = await lit.encryptText(
+      encryptString.current.value,
+      chain.current.value,
+      hashString.current.value,
+      address.current.value
+    );
     setEncryptedText(encryptedResult.encryptedString);
+    setAuthSig(encryptedResult.authSig);
     encryptedSymmetricKey.current = encryptedResult.encryptedSymmetricKey;
   }
 
@@ -32,8 +44,15 @@ function App() {
     }
 
     try {
-      const _decryptedString = await lit.decryptText(encryptedText, encryptedSymmetricKey.current, chain.current.value);
-      setDecryptedText(_decryptedString);
+      const { decryptedString, authSig} = await lit.decryptText(
+        encryptedText,
+        encryptedSymmetricKey.current,
+        chain.current.value,
+        hashString.current.value,
+        address.current.value
+      );
+      setDecryptedText(decryptedString);
+      setAuthSig(authSig);
     } catch (error) {
       // alert(noAuthError);
     }
@@ -55,6 +74,7 @@ function App() {
         </div>
         <div className="authSig">
           <h2>Authsig Generated</h2>
+          <textArea>{authSig}</textArea>
         </div>
       </div>
       <div className="buttonsContainer">

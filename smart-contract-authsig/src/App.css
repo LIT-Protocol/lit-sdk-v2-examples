@@ -51,6 +51,9 @@ textarea {
   border: none;
 }
 
+a {
+  color: red;
+}
 
 .App {
   text-align: center;

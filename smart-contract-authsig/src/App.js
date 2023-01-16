@@ -66,7 +66,12 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Smart Contract Authsig</h1>
+      <h1>Smart Contract Authsig using EIP1271</h1>
+      <h3>To understand the EIP1271 Authsig please check out our{" "}
+        <a href="https://developer.litprotocol.com/" target="_blank">
+          tutorial
+        </a>
+      </h3>
       <div className="container">
         <div className="inputContainer">
           <h2>String to encrypt</h2>
@@ -75,7 +80,7 @@ function App() {
           <input type="text" ref={hashString} />
           <h2>Address of the Smart Contract</h2>
           <input type="text" ref={address} />
-          <h2>Chain</h2>
+          <h2>Above Contract's Chain</h2>
           <input type="text" ref={chain} />
         </div>
         <div className="authSig">
@@ -88,10 +93,10 @@ function App() {
         <button onClick={decryptText}>Decrypt</button>
       </div>
       {(encryptedText !== "" && decryptedText.length === 0) && (
-        <h3>String Encrypted: {encryptedText.size} bytes. Thanks for using Lit!</h3>
+        <h2>String Encrypted: {encryptedText.size} bytes. Thanks for using Lit!</h2>
       )}
       {decryptedText.length > 0 && (
-        <h3>String Decrypted: {decryptedText}</h3>
+        <h2>String Decrypted: {decryptedText}</h2>
       )}
     </div>
   );

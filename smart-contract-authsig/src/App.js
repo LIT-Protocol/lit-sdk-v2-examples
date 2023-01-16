@@ -75,13 +75,13 @@ function App() {
       <div className="container">
         <div className="inputContainer">
           <h2>String to encrypt</h2>
-          <input type="text" ref={encryptString} />
+          <input type="text" defaultValue={"Lit is 🔥"} ref={encryptString} />
           <h2>Unhashed _hash parameter for isValidSignature</h2>
-          <input type="text" ref={hashString} />
+          <input type="text" defaultValue={"_hash"} ref={hashString} />
           <h2>Address of the Smart Contract</h2>
-          <input type="text" ref={address} />
+          <input type="text" defaultValue={"0x6FdF5aD7f256D9677eC1d6B7e633Ff1E7FA5Ac14"} ref={address} />
           <h2>Above Contract's Chain</h2>
-          <input type="text" ref={chain} />
+          <input type="text" defaultValue={"mumbai"} ref={chain} />
         </div>
         <div className="authSig">
           <h2>Authsig Generated</h2>

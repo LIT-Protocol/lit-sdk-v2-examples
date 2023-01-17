@@ -68,7 +68,7 @@ function App() {
     <div className="App">
       <h1>Smart Contract Authsig using EIP1271</h1>
       <h3>To understand the EIP1271 Authsig please check out our{" "}
-        <a href="https://developer.litprotocol.com/" target="_blank">
+        <a href="https://developer.litprotocol.com/toolsandexamples/sdkexamples/smartcontractauthsig/" target="_blank">
           tutorial
         </a>
       </h3>

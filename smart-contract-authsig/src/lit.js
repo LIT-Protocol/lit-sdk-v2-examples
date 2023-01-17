@@ -1,22 +1,6 @@
 import LitJsSdk from "@lit-protocol/sdk-browser";
 
-const client = new LitJsSdk.LitNodeClient({
-    alertWhenUnauthorized: false,
-    litNetwork: "custom",
-    bootstrapUrls: [
-        "http://127.0.0.1:7470",
-        "http://127.0.0.1:7471",
-        "http://127.0.0.1:7472",
-        "http://127.0.0.1:7473",
-        "http://127.0.0.1:7474",
-        "http://127.0.0.1:7475",
-        "http://127.0.0.1:7476",
-        "http://127.0.0.1:7477",
-        "http://127.0.0.1:7478",
-        "http://127.0.0.1:7479",
-    ],
-    debug: true,
-});
+const client = new LitJsSdk.LitNodeClient();
 
 const getAccessControlConditions = (chain) => {
     // Checks if the user has at least 0 ETH

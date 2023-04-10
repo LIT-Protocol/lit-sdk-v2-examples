@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import LitJsSdk from "lit-js-sdk";
+import * as LitJsSdk from "@lit-protocol/lit-node-client";
 import './App.css';
 
 function App() {
@@ -69,8 +69,8 @@ function App() {
       },
     });
 
-    setReturnedJson(response !== "" ? JSON.stringify(response, null, 4) : "Doesn't satisfy Access Conditions");
-    setSignature(response !== "" ? signatures?.sig1?.signature : "Doesn't satisfy Access Conditions");
+    setReturnedJson(response && response !== "" ? JSON.stringify(response, null, 4) : "Doesn't satisfy Access Conditions");
+    setSignature(response && response !== "" ? signatures?.sig1?.signature : "Doesn't satisfy Access Conditions");
   }
 
   return (

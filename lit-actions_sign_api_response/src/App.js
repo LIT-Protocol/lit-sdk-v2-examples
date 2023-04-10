@@ -1,5 +1,5 @@
 import './App.css';
-import LitJsSdk from "lit-js-sdk";
+import * as LitJsSdk from '@lit-protocol/lit-node-client';
 import { useState } from 'react';
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
       authSig,
       jsParams: {
         day: parseInt(day),
-        publicKey: "0x041270149148d3eece72d57471232d96308063cd16038f6f8f0daf4ce267e3e76273d02e89e482cb5e0bc944ca98df0594403021614e0a0409264cd13944000767",
+        publicKey: "0x042f6737a869c67f8bd39e7479e16567707e4dd57fd6c409125fff132215c5fbe6031fd696b778bc516ebc342dbb340ed8b297f5ccb79d480ae9c250def4f16a6a",
         sigName: "sig1",
       },
     });

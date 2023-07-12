@@ -2,7 +2,7 @@
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount, useNetwork, useSigner } from 'wagmi'
-import { ethConnect } from '@lit-protocol/lit-node-client'
+import { ethConnect, disconnectWeb3 } from '@lit-protocol/lit-node-client'
 import { LOCAL_STORAGE_KEYS } from '@lit-protocol/constants'
 import { useEffect, useState } from 'react'
 
@@ -10,7 +10,7 @@ export default function Home() {
   const [authSig, setAuthSig] = useState(null)
   const [error, setError] = useState(null)
 
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, isDisconnected } = useAccount()
   const { data: signer } = useSigner()
   const { chain } = useNetwork()
 
@@ -48,12 +48,22 @@ export default function Home() {
     }
   }, [authSig, isConnected, signer, address, chain])
 
+  // Clear auth sig if wallet is disconnected
+  useEffect(() => {
+    if (isDisconnected) {
+      disconnectWeb3();
+      setAuthSig(null);
+    }
+  }, [isDisconnected])
+
   return (
     <main className="main">
       {error && 
         <div className='alert alert--error'>
           <p>❗️ {error}</p>
-          <button className='alert__btn' onClick={generateAuthSig}>Try again</button>
+          <button className='alert__btn' onClick={() => generateAuthSig(signer, address, chain.id)}>
+            Try again
+          </button>
         </div>
       }
       {authSig && 

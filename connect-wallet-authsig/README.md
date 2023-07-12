@@ -2,6 +2,8 @@
 
 This is a [Next.js](https://nextjs.org/) example that demonstrates how to use the `signAndSaveAuthMessage` function from the `@lit-protocol/auth-browser` package with a **Connect Wallet** modal like [RainbowKit](https://www.rainbowkit.com/docs/introduction).
 
+Note: This example uses prior versions of RainbowKit and `wagmi` that are compatible with `ethers`.
+
 ## 💻 Getting Started
 
 1. Clone this repo and download dependencies:
